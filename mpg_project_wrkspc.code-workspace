@@ -2,6 +2,9 @@
     "folders": [
         {
             "path": "mpg"
+        },
+        {
+            "path": "utils"
         }
     ]
 }

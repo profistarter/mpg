@@ -9,12 +9,14 @@
                 "/std:c++17",
                 "/I",
                 "C:\\Program Files\\PostgreSQL\\12\\include",
+                "/I",
+                "${workspaceFolder}/../utils",
                 "/Zi",
                 "/EHsc",
                 "/Fe:",
                 "${workspaceFolder}\\app.exe",
                 "app.cpp",
-                "pg_connection.cpp",             
+                "../utils/utils.cpp",         
                 "C:\\Program Files\\PostgreSQL\\12\\lib\\libpq.lib"
             ],
             "options": {
