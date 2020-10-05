@@ -1,0 +1,31 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "app",
+            "command": "cl.exe",
+            "args": [
+                "/std:c++17",
+                "/I",
+                "C:\\Program Files\\PostgreSQL\\12\\include",
+                "/Zi",
+                "/EHsc",
+                "/Fe:",
+                "${workspaceFolder}\\app.exe",
+                "app.cpp",             
+                "C:\\Program Files\\PostgreSQL\\12\\lib\\libpq.lib"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}
