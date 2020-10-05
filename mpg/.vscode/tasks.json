@@ -13,7 +13,8 @@
                 "/EHsc",
                 "/Fe:",
                 "${workspaceFolder}\\app.exe",
-                "app.cpp",             
+                "app.cpp",
+                "pg_connection.cpp",             
                 "C:\\Program Files\\PostgreSQL\\12\\lib\\libpq.lib"
             ],
             "options": {
