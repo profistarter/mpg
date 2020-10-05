@@ -1,3 +1,4 @@
+#include <windows.h>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -30,6 +31,7 @@ public:
 
         if (PQstatus(connection.get()) != CONNECTION_OK)
         {
+            std::cout << PQerrorMessage(connection.get()) << std::endl;
             throw std::runtime_error(PQerrorMessage(connection.get()));
         }
     }
@@ -48,6 +50,7 @@ public:
 
 int main()
 {
+    SetConsoleOutputCP(1251);
     PGConnection* conn = new PGConnection();
     std::cout << conn->exec("SELECT 1+1");
     delete conn;
