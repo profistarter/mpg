@@ -26,7 +26,7 @@ PGConnection::PGConnection()
 int PGConnection::exec(const char *query)
 {
     PGresult *res = PQexec(connection.get(), query);
-    if (PQresultStatus(res) == PGRES_FATAL_ERROR){
+    if (PQresultStatus(res) == PGRES_FATAL_ERROR) {
         throw std::runtime_error(PQerrorMessage(connection.get()));
     }
     int result_n = PQntuples(res);
