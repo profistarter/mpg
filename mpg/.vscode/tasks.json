@@ -16,7 +16,8 @@
                 "/Fe:",
                 "${workspaceFolder}\\app.exe",
                 "app.cpp",
-                "../utils/utils.cpp",         
+                "../utils/utils.cpp",     
+                "pg_connection.cpp",    
                 "C:\\Program Files\\PostgreSQL\\12\\lib\\libpq.lib"
             ],
             "options": {
