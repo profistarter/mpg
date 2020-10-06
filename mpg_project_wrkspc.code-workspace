@@ -8,6 +8,9 @@
         },
         {
             "path": "_config"
+        },
+        {
+            "path": "threads"
         }
     ]
 }

@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "app.exe - Сборка и отладка активного файла",
+            "name": "app.exe - библиотека mpg",
             "type": "cppvsdbg",
             "request": "launch",
             "program": "app.exe",
