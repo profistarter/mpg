@@ -28,7 +28,7 @@ private:
 
 public:
     PGConnection();
-    int exec(const char *query);
+    virtual int exec(const char *query);
 };
 
 #endif //PG_CONNECTION_H

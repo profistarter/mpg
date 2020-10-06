@@ -32,6 +32,38 @@
                 "kind": "build",
                 "isDefault": true
             }
+        },
+        {
+            "type": "shell",
+            "label": "tests",
+            "command": "cl.exe",
+            "args": [
+                "/std:c++17",
+                "/I",
+                "C:\\Program Files\\PostgreSQL\\12\\include",
+                "/I",
+                "${workspaceFolder}/../utils",
+                "/I", 
+                "${workspaceFolder}/../_include",
+                "/Zi",
+                "/EHsc",
+                "/Fe:",
+                "${workspaceFolder}\\test.exe",
+                "test.cpp",
+                "../utils/utils.cpp",     
+                "pg_connection.cpp",    
+                "C:\\Program Files\\PostgreSQL\\12\\lib\\libpq.lib"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         }
     ]
 }

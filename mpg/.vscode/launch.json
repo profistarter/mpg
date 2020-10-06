@@ -15,6 +15,18 @@
             "environment": [],
             "externalConsole": false,
             "preLaunchTask": "app"
+        },
+        {
+            "name": "test.exe - библиотека mpg",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "test.exe",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "preLaunchTask": "tests"
         }
     ]
 }
