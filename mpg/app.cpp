@@ -1,4 +1,3 @@
-#include <windows.h>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -41,7 +40,7 @@ public:
     {
         PGresult *res = PQexec(connection.get(), query);
         if (PQresultStatus(res) == PGRES_FATAL_ERROR){
-            std::cout << cpt(PQerrorMessage(connection.get())) << std::endl;
+            std::cout << utils::cpt(PQerrorMessage(connection.get())) << std::endl;
             throw std::runtime_error(PQerrorMessage(connection.get()));
         }
         int result_n = PQntuples(res);
