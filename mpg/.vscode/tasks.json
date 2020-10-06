@@ -11,6 +11,8 @@
                 "C:\\Program Files\\PostgreSQL\\12\\include",
                 "/I",
                 "${workspaceFolder}/../utils",
+                "/I", 
+                "${workspaceFolder}/../_include",
                 "/Zi",
                 "/EHsc",
                 "/Fe:",
