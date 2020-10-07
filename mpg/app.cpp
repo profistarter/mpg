@@ -6,6 +6,7 @@
 #include <iostream>
 #include "pg_pool_threads.hpp"
 #include "../utils/queue.hpp"
+#include "../utils/utils.h"
 
 //https://ravesli.com/urok-129-tajming-koda-vremya-vypolneniya-programmy/
 class Timer {
@@ -118,8 +119,9 @@ int main()
 
     //==============Последовательно
 
-    std::cout << "| \t\t\t\t | small \t | medium \t | large \t |" << std::endl;
-    std::cout << "| sync \t\t\t\t |";
+    std::cout << utils::cpt("| выполнение \\ объем таблицы\t | малый \t | средний \t | большой \t |") << std::endl;
+    std::cout << "| -------------------------------------------------------------------------" << std::endl;
+    std::cout << utils::cpt("| последовательно \t\t |");
     sync(num_query, Weight::little);
     sync(num_query, Weight::medium);
     sync(num_query, Weight::large);
@@ -128,11 +130,11 @@ int main()
     ///=============Параллельно
     std::cout << "| -------------------------------------------------------------------------" << std::endl;
     for (int i = 1; i < 6; ++i){
-        std::cout << "| parallel " << i << " thread \t\t |";
+        std::cout << utils::cpt("| параллельно ") << i << utils::cpt(" потоков \t |");
         treads(num_query, Weight::little, i);
         treads(num_query, Weight::medium, i);
         treads(num_query, Weight::large, i);
         std::cout << std::endl;
     }
-    
+
 }
