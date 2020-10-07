@@ -134,4 +134,5 @@ int main()
         treads(num_query, Weight::large, i);
         std::cout << std::endl;
     }
+    
 }
