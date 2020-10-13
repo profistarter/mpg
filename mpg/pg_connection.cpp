@@ -18,6 +18,11 @@ std::shared_ptr<Connection_Params> connection_params = nullptr;
 /* --------------------------------------------------- */
 
 PGConnection::PGConnection()
+    : async_handler(nullptr)
+    , sock(-1)
+    , results()
+    , sending(false)
+    , receiving(false)
 {
     if (connection_params.get() == nullptr) {
         std::shared_ptr<std::string> str = this->load_params_to_str();
@@ -30,23 +35,83 @@ PGConnection::PGConnection()
                          0),
         &PQfinish);
 
-    if (PQstatus(connection.get()) != CONNECTION_OK)
+    if (PQstatus(connection.get()) != CONNECTION_OK || PQsetnonblocking(connection.get(), 1) == -1)
     {
         std::cout << PQerrorMessage(connection.get()) << std::endl;
         throw std::runtime_error(PQerrorMessage(connection.get()));
     }
+    sock = PQsocket(connection.get());
 };
 
-int PGConnection::exec(const char *query)
+std::vector<std::shared_ptr<PGresult>> PGConnection::exec(const char *query)
 {
-    PGresult *res = PQexec(connection.get(), query);
-    if (PQresultStatus(res) == PGRES_FATAL_ERROR) {
-        std::cout << utils::cpt(PQerrorMessage(connection.get())) << std::endl;
-        throw std::runtime_error(PQerrorMessage(connection.get()));
+    std::shared_ptr<PGresult> res;
+    res.reset(PQexec(connection.get(), query), &PQclear);
+    if (PQresultStatus(res.get()) == PGRES_FATAL_ERROR){
+        error();
     }
-    int result_n = PQntuples(res);
-    PQclear(res);
-    return result_n;
+    return std::vector<std::shared_ptr<PGresult>>{res};
+}
+
+void PGConnection::send(const char* query, PGConnection::Callback fn)
+{
+    if(!clear_send() || receiving)
+        return;
+    int res = PQsendQuery(connection.get(), query);
+    if(res == 0)
+        error();
+    async_handler = fn;
+    sending = true;
+    receiving = true;
+};
+
+void PGConnection::receive(){
+    while(receiving){
+        if(!PQconsumeInput(connection.get()))
+            error();
+        if(!clear_send())
+            return;
+        if(PQisBusy(connection.get()))
+            return;
+        std::shared_ptr<PGresult> res;
+        res.reset(PQgetResult(connection.get()), &PQclear);
+        int res_status = PQresultStatus(res.get());
+
+        if(res.get() != NULL){
+            results.push_back(std::move(res));
+        }
+        else{
+            receiving = false;
+            if(async_handler){
+                async_handler(results);
+                async_handler = nullptr;
+            }
+        }
+    }
+}
+
+bool PGConnection::clear_send(){
+    if(sending){
+        int clr = PQflush(connection.get());
+        if(clr == -1)
+            error();
+        else if(clr == 0){
+            sending = false;
+        }            
+    }
+    return !sending;
+}
+bool PGConnection::is_ready(){
+    return !sending && !receiving;
+}
+
+const int *PGConnection::socket(){
+    return &sock;
+}
+
+void PGConnection::error(){
+    std::cout << utils::cpt(PQerrorMessage(connection.get())) << std::endl;
+    throw std::runtime_error(PQerrorMessage(connection.get()));
 }
 
 std::shared_ptr<std::string> PGConnection::load_params_to_str()

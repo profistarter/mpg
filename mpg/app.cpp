@@ -7,6 +7,7 @@
 #include "pg_pool_threads.hpp"
 #include "../utils/queue.hpp"
 #include "../utils/utils.h"
+#include "pg_pool_async.hpp"
 
 //https://ravesli.com/urok-129-tajming-koda-vremya-vypolneniya-programmy/
 class Timer {
@@ -106,6 +107,36 @@ void treads(const int &num_query, const Weight &weight, const int &num_threads){
     std::cout << " " << t2.elapsed() << " \t |";
 }
 
+void async(const int &num_query, const Weight &weight, const int &num_connections){
+    std::shared_ptr<TQueue<String_Fn>> queue = get_queue(num_query);
+    PGPool_Async<std::string, Weight> pool_async{num_connections};
+    Timer t2;
+    pool_async.run(queue, weight);
+    std::cout << " " << t2.elapsed() << " \t |";
+}
+
+void async_threads(const int &num_query, const Weight &weight, const int &num_connections){
+    std::shared_ptr<TQueue<String_Fn>> queue = get_queue(num_query);
+    PGPool_Async<std::string, Weight> pool_async{num_connections};
+    PGPool_Async<std::string, Weight> pool_async2{num_connections};
+    Timer t3;
+    {
+        std::vector<std::thread> threads(2);
+        threads[0] = std::thread(&PGPool_Async<std::string, Weight>::run,
+            std::ref(pool_async), std::ref(queue), weight);
+        threads[1] = std::thread(&PGPool_Async<std::string, Weight>::run,
+            std::ref(pool_async2), std::ref(queue), weight);
+
+        std::vector<std::thread>::iterator iter = threads.begin();
+        iter = threads.begin();
+        while(iter != threads.end()){
+            (*iter).join();
+            ++iter;
+        }
+    }
+    std::cout << " " << t3.elapsed() << " \t |";
+}
+
 int main()
 {
     SetConsoleOutputCP(1251);
@@ -134,6 +165,26 @@ int main()
         treads(num_query, Weight::little, i);
         treads(num_query, Weight::medium, i);
         treads(num_query, Weight::large, i);
+        std::cout << std::endl;
+    }
+    
+    //=============Асинхронно
+    std::cout << "| ------------------------------------------------------------------------" << std::endl;
+    for (int i = 1; i < 6; ++i){
+        std::cout << utils::cpt("| асинхронно ") << i << utils::cpt(" соединений \t |");
+        async(num_query, Weight::little, i);
+        async(num_query, Weight::medium, i);
+        async(num_query, Weight::large, i);
+        std::cout << std::endl;
+    }
+
+    //=============Асинхронно 2 потока
+    std::cout << "| ------------------------------------------------------------------------" << std::endl;
+    for (int i = 1; i < 6; ++i){
+        std::cout << utils::cpt("| асинх (2 потока) ") << i << utils::cpt(" соедин. \t |");
+        async_threads(num_query, Weight::little, i);
+        async_threads(num_query, Weight::medium, i);
+        async_threads(num_query, Weight::large, i);
         std::cout << std::endl;
     }
 
