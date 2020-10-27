@@ -1,10 +1,11 @@
 #define DOCTEST_CONFIG_IMPLEMENT
-#include <windows.h>
 #include "doctest/doctest.h"
 #include "pg_pool_threads.hpp"
 
 int main(int argc, char** argv) {
+    #ifdef _WIN32
     SetConsoleOutputCP(1251);
+    #endif
 
     doctest::Context context;
     context.applyCommandLine(argc, argv);

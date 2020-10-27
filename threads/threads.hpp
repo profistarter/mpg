@@ -22,7 +22,7 @@ private:
     int num_threads;
 
 public:
-    Threads(int _num_threads);
+    Threads(int _num_threads = std::thread::hardware_concurrency());
     void run(std::shared_ptr<TQueue<Queue_Fn>> queue, Args... args);
 
 protected:
@@ -37,7 +37,7 @@ protected:
 /* --------------------------------------------------- */
 
 template <typename R, typename ...Args>
-Threads<R, Args...>::Threads(int _num_threads = std::thread::hardware_concurrency())
+Threads<R, Args...>::Threads(int _num_threads)
     : num_threads(_num_threads) {};
 
 template <typename R, typename ...Args>

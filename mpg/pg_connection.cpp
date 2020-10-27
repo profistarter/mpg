@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <rapidjson/document.h>
+#include <exception>
 
 const std::string CONFIG_PATH = "../_config/config.json";
 std::shared_ptr<Connection_Params> connection_params = nullptr;
@@ -126,10 +127,10 @@ std::shared_ptr<std::string> PGConnection::load_params_to_str()
             }
             config_file.close();
         } else {
-            throw new std::exception("No config file. Add config file config/config.json");
+            throw std::runtime_error("No config file. Add config file config/config.json");
         }
-    } catch (std::exception e) {
-        std::cout << e.what();
+    } catch (std::exception& e) {
+        throw;
     };
     return std::make_shared<std::string>(params_str);
 }

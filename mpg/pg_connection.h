@@ -3,6 +3,7 @@
 
 #include <string>
 #include <mutex>
+#include <memory>
 #include <vector>
 #include <libpq-fe.h>
 #include <functional>

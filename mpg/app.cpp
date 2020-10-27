@@ -1,6 +1,5 @@
 #define DOCTEST_CONFIG_DISABLE
 #include "doctest/doctest.h"
-#include <windows.h>
 #include <vector>
 #include <functional>
 #include <iostream>
@@ -139,7 +138,9 @@ void async_threads(const int &num_query, const Weight &weight, const int &num_co
 
 int main()
 {
+    #ifdef _WIN32
     SetConsoleOutputCP(1251);
+    #endif
 
     //Подготовка
     prepare(Weight::little);
@@ -187,5 +188,5 @@ int main()
         async_threads(num_query, Weight::large, i);
         std::cout << std::endl;
     }
-
+    return 0;
 }

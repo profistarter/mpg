@@ -27,6 +27,30 @@
             "environment": [],
             "externalConsole": false,
             "preLaunchTask": "tests"
+        },
+        {
+            "name": "app linux",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\app",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "preLaunchTask": "app linux"
+        },
+        {
+            "name": "tests linux",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}\\test",
+            "args": [],
+            "stopAtEntry": true,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "preLaunchTask": "tests linux"
         }
     ]
 }

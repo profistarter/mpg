@@ -1,12 +1,20 @@
 #include <string>
-#include <windows.h>
+#ifdef _WIN32 
+#include <windows.h> 
+#endif
+#include "utils.h"
 
 namespace utils {
-    
+    #ifdef __linux__
+    unsigned int CP_UTF8 = 0;
+    unsigned int CP_ACP = 0;
+    #endif
+
+    #ifdef _WIN32
     //Взято отсюда: https://ru.stackoverflow.com/questions/783946/Конвертировать-в-кодировку-utf8
 
     //Функция преобразования кодировки строки. По умолчанию из utf-8 в текущую OEM (обычно cp866).
-    std::string cpt(const char* str, unsigned int srcCP = CP_UTF8, unsigned int dstCP = CP_ACP)
+    std::string cpt(const char *str, unsigned int srcCP, unsigned int dstCP)
     {
         std::string res;
         int result_u, result_c;
@@ -81,4 +89,15 @@ namespace utils {
         }
         return true;
     }
+    
+    #elif __linux__
+    std::string cpt(const char *str, unsigned int srcCP, unsigned int dstCP){
+        return str;
+    }
+    bool is_valid_utf8(const char * string){
+        return true;
+    }
+    #else
+
+    #endif
 }

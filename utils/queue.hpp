@@ -75,7 +75,8 @@ Queue_Fn TQueue<Queue_Fn>::get_task(bool *queue_end) {
 
 template <typename Queue_Fn>
 void TQueue<Queue_Fn>::for_each(Predicator predicator){
-    std::vector<Queue_Fn>::iterator iter = queue.begin();
+    typename std::vector<Queue_Fn>::iterator iter;
+    iter = queue.begin();
     while(iter!=queue.end()) 
     {
         if(predicator)

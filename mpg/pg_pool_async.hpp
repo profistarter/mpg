@@ -10,6 +10,7 @@
 #include "../utils/queue.hpp"
 #undef max
 #define max(x,y) ((x) > (y) ? (x) : (y))
+#include <cstring>// linux for strerror()
 
 /* --------------------------------------------------- */
 /*                       HEADER                        */
@@ -83,7 +84,7 @@ void PGPool_Async<R, Args...>::loop(std::shared_ptr<TQueue<Queue_Fn>> _queue, Ar
         struct timeval timeout;
         timeout.tv_sec = 1;
         timeout.tv_usec = 1;
-        if (select(nfds, &input_mask, &output_mask, NULL, &timeout) < 0)
+        if (select(nfds+1, &input_mask, &output_mask, NULL, &timeout) < 0)
         {
             fprintf(stderr, "select() failed: %s\n", strerror(errno));
         }
