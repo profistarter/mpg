@@ -1,16 +1,27 @@
 {
-    "folders": [
-        {
-            "path": "mpg"
-        },
-        {
-            "path": "utils"
-        },
-        {
-            "path": "_config"
-        },
-        {
-            "path": "threads"
-        }
-    ]
+	"folders": [
+		{
+			"path": "_config"
+		},
+		{
+			"path": "_include"
+		},
+		{
+			"path": "mpg"
+		},
+		{
+			"path": "threads"
+		},
+		{
+			"path": "utils"
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/*.exe": true,
+			"**/*.ilk": true,
+			"**/*.obj": true,
+			"**/*.pdb": true
+		}
+	}
 }
