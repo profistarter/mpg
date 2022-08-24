@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${default}",
-                "${workspaceFolder}/../_include/**"              
+                "${workspaceFolder}/../_include/**",
+                "C:\\Program Files\\PostgreSQL\\12\\include"
             ],
             "defines": [
                 "_DEBUG",
