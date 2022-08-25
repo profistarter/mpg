@@ -1,0 +1,30 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Тесты модуля async",
+			"command": "cl.exe",
+			"args": [
+                "/std:c++17",
+                "/I",
+                "${workspaceFolder}/../_include",
+                "/Zi",
+                "/EHsc",
+                "/Fe:",
+                "${workspaceFolder}\\test.exe",
+                "test.cpp"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": [
+				"$msCompile"
+			],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+		}
+	]
+}
