@@ -3,6 +3,7 @@
 #include <mutex>
 #include <thread>
 #include <vector>
+#include <memory>
 #include <functional>
 #include "doctest/doctest.h"
 #include <chrono>
@@ -50,7 +51,7 @@ Async<Socket_Holder, R, Args...>::Async(int num_connections)
         : socket_holders(Socks_Vector(num_connections))
         , queue()
 {
-    Conns_Vector::iterator iter = socket_holders.begin();
+    Socks_Vector::iterator iter = socket_holders.begin();
     while (iter != socket_holders.end()) {
         *iter = std::make_shared<Socket_Holder>();
         ++iter;
@@ -139,8 +140,8 @@ void Async<Socket_Holder, R, Args...>::loop(std::shared_ptr<TQueue<Queue_Fn>> qu
 /*                       TESTS                         */
 /* --------------------------------------------------- */
 
-TEST_SUITE("Тест класса Threads"){
-    namespace test_threads {
+TEST_SUITE("Тест класса Async"){
+    namespace test_async {
         int static count = 0;
         std::mutex static count_mutex;
 
@@ -149,7 +150,7 @@ TEST_SUITE("Тест класса Threads"){
             count += 1;
         }
 
-        Threads<void> threads(3);
+        Async<void> threads(3);
         typedef std::function<void(void)> Void_Fn;
         std::shared_ptr<TQueue<Void_Fn>> queue = std::make_shared<TQueue<Void_Fn>>(4, count_task);
 
@@ -159,47 +160,7 @@ TEST_SUITE("Тест класса Threads"){
             threads.run(queue);
             CHECK(count == 4);
             CHECK(queue->queue_size() == 0);
-        }
-
-        int num_threads = 3; // количество потоков
-        std::vector<int> static counts(num_threads, 0);
-        std::mutex static counts_mutex;
-
-        int counts_task(int i) {
-            using namespace std::chrono_literals;
-            std::this_thread::sleep_for(10ms);
-            std::lock_guard<std::mutex> guard_mutex(counts_mutex);
-            counts[i] += 1;
-            return i;
-        }
-
-        class Test_Threads: public Threads<int, int> {
-        public:
-            typedef Threads<int, int>::Queue_Fn Test_Fn;
-            Test_Threads(int num_threads)
-                : Threads<int, int>(num_threads) {};
-        protected:
-            void wrapper_loop(std::shared_ptr<TQueue<Test_Fn>> queue, int num_thread, int arg) override{
-                Threads<int, int>::loop(queue, [num_thread](Queue_Fn task) {
-                    int res = task(num_thread);
-                    // CHECK(res == num_thread);
-                }, num_thread);
-            }
-        };
-
-        const int num_tasks = 100; // количество заданий
-        Test_Threads test_threads{num_threads};
-        std::shared_ptr<TQueue<Test_Threads::Test_Fn>> queue2 = std::make_shared<TQueue<Test_Threads::Test_Fn>>(num_tasks, counts_task);
-
-        TEST_CASE("Равномерность выполнения потоков и размер очереди") {
-            CHECK(queue2->queue_size() == num_tasks);
-
-            test_threads.run(queue2, num_tasks);
-            for (int i = 0; i < counts.size(); ++i){
-                CHECK(counts[i] > 0);
-            }
-            CHECK(queue2->queue_size() == 0);
-        }
+        }        
     }
 }
 
