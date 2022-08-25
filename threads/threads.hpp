@@ -3,6 +3,7 @@
 #include <mutex>
 #include <thread>
 #include <vector>
+#include <memory>
 #include <functional>
 #include "doctest/doctest.h"
 #include <chrono>

@@ -1,0 +1,77 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "server linux",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-std=c++1z",
+                "-g",
+                "app.cpp",  
+                "-o",
+                "${workspaceFolder}/app",
+                "-L", "/usr/lib/x86_64-linux-gnu",
+                "-lpq", "-lpthread"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "type": "shell",
+            "label": "server 2 linux",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-std=c++1z",
+                "-g",
+                "app2.cpp",  
+                "-o",
+                "${workspaceFolder}/app2",
+                "-L", "/usr/lib/x86_64-linux-gnu",
+                "-lpq", "-lpthread"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "type": "shell",
+            "label": "server 3 linux",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-std=c++1z",
+                "-g",
+                "app3.cpp",  
+                "-o",
+                "${workspaceFolder}/app3",
+                "-L", "/usr/lib/x86_64-linux-gnu",
+                "-lpq", "-lpthread"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

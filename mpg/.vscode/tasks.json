@@ -103,7 +103,7 @@
                 "-g",
                 "test.cpp",  
                 "../utils/utils.cpp",           
-                "pg_connection.cpp",
+                "../mpg/pg_connection.cpp",
                 "-o",
                 "${workspaceFolder}/test",
                 "-I", "/usr/include/postgresql",

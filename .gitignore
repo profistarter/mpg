@@ -3,3 +3,6 @@
 **/**/*.obj
 **/**/*.pdb
 mpg/app
+server/app2
+server/app3
+client/app

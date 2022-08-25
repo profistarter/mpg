@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "client linux",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-std=c++1z",
+                "-g",
+                "app.cpp",  
+                "-o",
+                "${workspaceFolder}/app",
+                "-L", "/usr/lib/x86_64-linux-gnu",
+                "-lpq", "-lpthread"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

@@ -25,6 +25,35 @@
                 "kind": "build",
                 "isDefault": true
             }
-		}
+		},
+		{
+            "type": "shell",
+            "label": "Тесты модуля async linux",
+            "command": "/usr/bin/g++",
+            "args": [
+                "-std=c++1z",
+                "-g",
+                "test.cpp",  
+                "../utils/utils.cpp",           
+                "pg_connection.cpp",
+                "-o",
+                "${workspaceFolder}/test",
+                "-I", "/usr/include/postgresql",
+                "-I", "${workspaceFolder}/../utils",
+                "-I", "${workspaceFolder}/../_include",
+                "-L", "/usr/lib/x86_64-linux-gnu",
+                "-lpq", "-lpthread"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
 	]
 }
