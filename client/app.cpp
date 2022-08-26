@@ -6,8 +6,7 @@
 #include <unistd.h>     //close()
 #include <iostream>     //std::string
 
-char message[] = "Hello there!\n";
-char buf[sizeof(message)];
+char buf[1024];
 
 int main()
 {
@@ -30,10 +29,19 @@ int main()
         exit(2);
     }
 
-    send(sock, message, sizeof(message), 0);
-    recv(sock, buf, sizeof(message), 0);
-    
+    char message1[] = "Hello one\n";
+    std::cout << "send 1\n";
+    send(sock, message1, sizeof(message1), 0);
+    char message2[] = "Hello two\n";
+    std::cout << "send 2\n";
+    send(sock, message2, sizeof(message2), 0);
+    std::cout << "recv 1\n";
+    recv(sock, buf, sizeof(message1), 0);
     std::cout << buf;
+    std::cout << "recv 2\n";
+    recv(sock, buf, sizeof(message2), 0);
+    std::cout << buf;
+    
     close(sock);
 
     return 0;

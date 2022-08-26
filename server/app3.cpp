@@ -11,6 +11,7 @@
 #include <stdlib.h>     /* exit, EXIT_FAILURE */
 #include <unistd.h>     //close()
 #include <iostream>     //std::string
+#include <vector>
 using namespace std;
 
 int main()
@@ -40,8 +41,7 @@ int main()
 
     listen(listener, 2);
     
-    set<int> clients;
-    clients.clear();
+    std::vector<int> clients(0);
 
     while(1)
     {
@@ -50,8 +50,12 @@ int main()
         FD_ZERO(&readset);
         FD_SET(listener, &readset);
 
-        for(set<int>::iterator it = clients.begin(); it != clients.end(); it++)
-            FD_SET(*it, &readset);
+
+        std::vector<int>::iterator iter = clients.begin();
+        while (iter != clients.end()) {
+            FD_SET(*iter, &readset);
+            ++iter;
+        }
 
         // Задаём таймаут
         timeval timeout;
@@ -66,6 +70,28 @@ int main()
             exit(3);
         }
         
+
+        iter = clients.begin();
+        while (iter != clients.end()){
+            if(FD_ISSET(*iter, &readset))
+            {
+                // Поступили данные от клиента, читаем их
+                bytes_read = recv(*iter, buf, 1024, 0);
+
+                if(bytes_read <= 0)
+                {
+                    // Соединение разорвано, удаляем сокет из множества
+                    close(*iter);
+                    clients.erase(iter);
+                    continue;
+                }
+                std::cout << bytes_read << " " << buf;
+                // Отправляем данные обратно клиенту
+                send(*iter, buf, bytes_read, 0);
+            }
+            ++iter;
+        }
+
         // Определяем тип события и выполняем соответствующие действия
         if(FD_ISSET(listener, &readset))
         {
@@ -78,28 +104,8 @@ int main()
             }
             
             fcntl(sock, F_SETFL, O_NONBLOCK);
-
-            clients.insert(sock);
-        }
-
-        for(set<int>::iterator it = clients.begin(); it != clients.end(); it++)
-        {
-            if(FD_ISSET(*it, &readset))
-            {
-                // Поступили данные от клиента, читаем их
-                bytes_read = recv(*it, buf, 1024, 0);
-
-                if(bytes_read <= 0)
-                {
-                    // Соединение разорвано, удаляем сокет из множества
-                    close(*it);
-                    clients.erase(*it);
-                    continue;
-                }
-
-                // Отправляем данные обратно клиенту
-                send(*it, buf, bytes_read, 0);
-            }
+            std::cout << "new connection\n";
+            clients.push_back(sock);
         }
     }
     
