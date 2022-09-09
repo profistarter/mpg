@@ -12,6 +12,7 @@ int main()
 {
     int sock;
     struct sockaddr_in addr;
+    int bytes_read;
 
     sock = socket(AF_INET, SOCK_STREAM, 0);
     if(sock < 0)
@@ -29,18 +30,18 @@ int main()
         exit(2);
     }
 
-    char message1[] = "Hello one\n";
+    char message1[] = "First";
     std::cout << "send 1\n";
     send(sock, message1, sizeof(message1), 0);
-    char message2[] = "Hello two\n";
+    char message2[] = "Second";
     std::cout << "send 2\n";
     send(sock, message2, sizeof(message2), 0);
-    std::cout << "recv 1\n";
-    recv(sock, buf, sizeof(message1), 0);
-    std::cout << buf;
-    std::cout << "recv 2\n";
-    recv(sock, buf, sizeof(message2), 0);
-    std::cout << buf;
+    std::cout << "recv 1: ";
+    bytes_read = recv(sock, buf, sizeof(message1), 0);
+    std::cout << bytes_read << " " << buf << "\n";
+    std::cout << "recv 2: ";
+    bytes_read = recv(sock, buf, sizeof(message2), 0);
+    std::cout << bytes_read << " " << buf << "\n";
     
     close(sock);
 

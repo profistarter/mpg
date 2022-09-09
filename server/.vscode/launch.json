@@ -5,16 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "server linux",
+            "name": "server 3 linux",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}\\app",
+            "program": "${workspaceFolder}\\app3",
             "args": [],
             "stopAtEntry": true,
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
-            "preLaunchTask": "app linux"
+            "preLaunchTask": "server 3 linux"
         }
     ]
 }
